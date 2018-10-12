@@ -1,20 +1,13 @@
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,25 +15,19 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cioc.libreerp.R;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.client.CookieStore;
@@ -85,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         httpCookieStore = new PersistentCookieStore(this);
         httpCookieStore.clear();
-        client = new AsyncHttpClient();
+        client = new AsyncHttpClient(true, 80, 443);
         client.setCookieStore(httpCookieStore);
 
         isStoragePermissionGranted();
@@ -274,7 +261,7 @@ public class LoginActivity extends AppCompatActivity {
 //                                getPublicAlbumStorageDir("Libre");
 //                                File directory = Environment.getExternalStoragePublicDirectory("Libre");
 //                                file = new File(directory, fileName);
-                                file = new File(Environment.getExternalStorageDirectory()+"/CIOC");
+                                file = new File(Environment.getExternalStorageDirectory()+"/"+R.string.app_name1);
                                 Log.e("directory",""+file.getAbsolutePath());
                                 if (file.mkdir()) {
                                     sessionManager.setCsrfId(csrf_token);
@@ -296,6 +283,7 @@ public class LoginActivity extends AppCompatActivity {
 //                                    startService(mServiceIntent);
 //                                    startService(new Intent(LoginActivity.this, LocationService.class));
                                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
+
                                     finish();
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Dir not created", Toast.LENGTH_SHORT).show();

@@ -1,4 +1,4 @@
-package com.cioc.libreerp.db;
+package com.cioc.vamso.db;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;

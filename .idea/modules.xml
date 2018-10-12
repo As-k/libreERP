@@ -4,8 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/greenDaoGenerator/greenDaoGenerator.iml" filepath="$PROJECT_DIR$/greenDaoGenerator/greenDaoGenerator.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libreERP.iml" filepath="$PROJECT_DIR$/libreERP.iml" />
-      <module fileurl="file://$PROJECT_DIR$/libreERP-android.iml" filepath="$PROJECT_DIR$/libreERP-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/libreERP_Vamso.iml" filepath="$PROJECT_DIR$/libreERP_Vamso.iml" />
     </modules>
   </component>
 </project>

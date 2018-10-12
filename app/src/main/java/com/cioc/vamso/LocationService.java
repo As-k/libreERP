@@ -1,11 +1,8 @@
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
-import android.*;
 import android.app.Service;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,7 +11,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,22 +19,18 @@ import android.widget.Toast;
 //import com.cioc.mygreendao.db.GPSLocation;
 //import com.cioc.mygreendao.db.GPSLocationDao;
 
-import com.cioc.libreerp.db.DaoSession;
-import com.cioc.libreerp.db.GPSLocation;
-import com.cioc.libreerp.db.GPSLocationDao;
+import com.cioc.vamso.db.DaoSession;
+import com.cioc.vamso.db.GPSLocation;
+import com.cioc.vamso.db.GPSLocationDao;
 
 import org.greenrobot.greendao.query.Query;
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.jar.*;
 
 /**
  * Created by Ashish on 2/9/2018.
@@ -119,7 +111,8 @@ public class LocationService extends Service implements LocationListener {
         int c_hr = c.get(Calendar.HOUR_OF_DAY);
         int c_min = c.get(Calendar.MINUTE);
         int c_sec = c.get(Calendar.SECOND);
-        date_time = c_year+"/"+(c_month+1)+"/"+c_day+" "+c_hr+":"+c_min+":"+c_sec;
+//        int c_milli_sec = c.get(Calendar.MILLISECOND);
+        date_time = c_year+"/"+(c_month+1)+"/"+c_day+" "+c_hr+":"+c_min+":"+c_sec;//+"."+c_milli_sec
 
         Location dis_loca = new Location("");
         dis_loca.setLatitude(location.getLatitude());

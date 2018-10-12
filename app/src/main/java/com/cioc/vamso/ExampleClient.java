@@ -9,7 +9,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
 import java.util.Arrays;
 import java.util.List;

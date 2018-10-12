@@ -1,10 +1,11 @@
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,9 +18,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cioc.libreerp.db.DaoSession;
-import com.cioc.libreerp.db.GPSLocation;
-import com.cioc.libreerp.db.GPSLocationDao;
+import com.cioc.libreerp.R;
+import com.cioc.vamso.db.DaoMaster;
+import com.cioc.vamso.db.DaoSession;
+import com.cioc.vamso.db.GPSLocation;
+import com.cioc.vamso.db.GPSLocationDao;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.FileAsyncHttpResponseHandler;
@@ -32,7 +35,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -49,11 +51,12 @@ public class MainActivity extends AppCompatActivity {
     File file1;
     static int pk;
     public static Switch sw;
-    boolean serviveRuning;
+    boolean serviceRuning;
 
     GPSLocationDao gpsLocationDao;
     Query<GPSLocation> query;
     List<GPSLocation> gpsLocation;
+    DaoSession daoSession;
     int lst_pk, i;
     long id;
     Bitmap bitmap;
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         backend = new Backend(this);
         httpclient = backend.getHTTPClient();
 
-        userName = findViewById(R.id.username);
+        userName = findViewById(R.id.user_name);
         emailId = findViewById(R.id.emailId);
         mobileNo = findViewById(R.id.mobileNo);
         sw = findViewById(R.id.sw);
@@ -77,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
         profilePic = findViewById(R.id.profile_image);
 
-        DaoSession daoSession = ((AppController) getApplication()).getDaoSession();
+        daoSession = ((AppController) getApplication()).getDaoSession();
         gpsLocationDao = daoSession.getGPSLocationDao();
 
-        serviveRuning = sessionManager.getStatus();
+        serviceRuning = sessionManager.getStatus();
 
-        sw.setChecked(serviveRuning);
+        sw.setChecked(serviceRuning);
 //        if (serviveRuning) {
 //            startService(new Intent(MainActivity.this, LocationService.class));
 //        } else {
@@ -127,9 +130,9 @@ public class MainActivity extends AppCompatActivity {
                     if (!mobile.equals("null"))
                         mobileNo.setText(mobile);
 
-                    String[] image = dpLink.split("/"); //Backend.serverUrl+"/media/HR/images/DP/"
-                    String dp = image[7];
-                    Log.e("image "+dpLink,""+dp);
+//                    String[] image = dpLink.split("/"); //Backend.serverUrl+"/media/HR/images/DP/"
+//                    String dp = image[7];
+//                    Log.e("image "+dpLink,""+dp);
 //                    for (int item=0; item<image.length; item++) {
 //                        System.out.println("item = " + item);
 //                        Log.e("image"+item,""+image[item]);
@@ -145,28 +148,28 @@ public class MainActivity extends AppCompatActivity {
                             // Do something with the file `response`
 //                            writeConfigFile(context);
 
-                            FileOutputStream outputStream;
-                            try {
-                                file1 = new File(Environment.getExternalStorageDirectory()+"/CIOC"+ "/" + dp);
-                                if (file1.exists())
-                                    file1.delete();
-//                            file1.createNewFile();
-                                outputStream = new FileOutputStream(file1);
-                                outputStream.write(dp.getBytes());
-//                            outputStream.flush();
-                                outputStream.close();
-//                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-//                        }
+//                            FileOutputStream outputStream;
+//                            try {
+//                                file1 = new File(Environment.getExternalStorageDirectory()+"/CIOC"+ "/" + dp);
+//                                if (file1.exists())
+//                                    file1.delete();
+////                            file1.createNewFile();
+//                                outputStream = new FileOutputStream(file1);
+//                                outputStream.write(dp.getBytes());
+////                            outputStream.flush();
+//                                outputStream.close();
+////                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+////                        }
+////
 //
-
-//                                bitmap = BitmapFactory.decodeFile(LoginActivity.file + "/" + dp);
-//                                if (bitmap != null) {
-//                                    profilePic.setImageBitmap(bitmap);
-//                                }
-                            }
-                            Log.e("image",""+file1.getAbsolutePath());
+////                                bitmap = BitmapFactory.decodeFile(LoginActivity.file + "/" + dp);
+////                                if (bitmap != null) {
+////                                    profilePic.setImageBitmap(bitmap);
+////                                }
+//                            }
+//                            Log.e("image",""+file1.getAbsolutePath());
                             Bitmap pp = BitmapFactory.decodeFile(file.getAbsolutePath());
                             profilePic.setImageBitmap(pp);
 
@@ -214,7 +217,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        update();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                update();
+            }
+        },2000);
 
         logoutButton = findViewById(R.id.logout_button);
         logoutButton.setOnClickListener(new View.OnClickListener() {
@@ -227,8 +235,12 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 sessionManager.clearAll();
-                                File dir = new File(Environment.getExternalStorageDirectory()+"/CIOC");
-                                Log.e("MainActivity",""+Environment.getExternalStorageDirectory()+"/CIOC");
+//                                gpsLocationDao.deleteInTx(gpsLocation);
+//                                DaoMaster mDaoMaster = AppController.;
+                                DaoMaster.dropAllTables(daoSession.getDatabase(), true);
+                                DaoMaster.createAllTables(daoSession.getDatabase(), true);
+                                File dir = new File(Environment.getExternalStorageDirectory()+"/"+R.string.app_name1);
+                                Log.e("MainActivity",""+Environment.getExternalStorageDirectory()+"/"+R.string.app_name1);
                                 if (dir.exists())
                                 if (dir.isDirectory()) {
                                     String[] children = dir.list();
@@ -250,7 +262,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
 //        updateButton = findViewById(R.id.update_button);
 //        updateButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -259,7 +270,6 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
     }
-
 
 //    @Override
 //    protected void onResume() {
@@ -294,6 +304,7 @@ public class MainActivity extends AppCompatActivity {
 //    };
 
     public void update(){
+
         query = gpsLocationDao.queryBuilder().orderAsc(GPSLocationDao.Properties.Id).build();
 
         JSONArray jsonArray = new JSONArray();
@@ -309,10 +320,11 @@ public class MainActivity extends AppCompatActivity {
                 String datetime = gpsLocation.get(j).getDate_time();
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("id", id);
-                    jsonObject.put("latitude", latitude);
-                    jsonObject.put("longitude", longitude);
-                    jsonObject.put("datetime", datetime);
+                    jsonObject.put("pk", id);
+                    jsonObject.put("user", pk);
+                    jsonObject.put("dated", datetime);
+                    jsonObject.put("x", latitude);
+                    jsonObject.put("y", longitude);
                     jsonArray.put(jsonObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -325,7 +337,7 @@ public class MainActivity extends AppCompatActivity {
             params.put("jsonArray", jsonArray);
 
 
-            httpclient.post(Backend.serverUrl + "/api/myWork/locationTracker/", params, new AsyncHttpResponseHandler() {
+            httpclient.post(Backend.serverUrl + "/api/myWork/locationData/", params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                     System.out.print("success");

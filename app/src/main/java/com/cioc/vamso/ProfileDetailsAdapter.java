@@ -1,4 +1,4 @@
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,9 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AlertDialogLayout;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cioc.libreerp.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -34,7 +33,6 @@ import cz.msebera.android.httpclient.Header;
 import static android.text.InputType.TYPE_CLASS_TEXT;
 import static android.text.InputType.TYPE_TEXT_FLAG_MULTI_LINE;
 import static android.text.InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS;
-import static android.view.Gravity.TOP;
 
 /**
  * Created by admin on 10/05/18.
@@ -264,7 +262,6 @@ public class ProfileDetailsAdapter extends RecyclerView.Adapter<ProfileDetailsAd
             personLocation =  itemView.findViewById(R.id.profile_location);
             callPerson =  itemView.findViewById(R.id.person_call);
             popupMenu =  itemView.findViewById(R.id.popup_menu);
-
         }
     }
 

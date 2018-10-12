@@ -1,4 +1,4 @@
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -62,6 +62,6 @@ public class SessionManager {
     public void clearAll(){
         spe = sp.edit();
         spe.clear();
-        spe.apply();
+        spe.commit();
     }
 }

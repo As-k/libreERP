@@ -1,11 +1,8 @@
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.WakefulBroadcastReceiver;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;

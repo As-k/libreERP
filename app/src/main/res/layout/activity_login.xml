@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_banner"
-    tools:context="com.cioc.libreerp.LoginActivity">
+    tools:context="com.cioc.vamso.LoginActivity">
 
     <ScrollView
         android:id="@+id/registration_form"

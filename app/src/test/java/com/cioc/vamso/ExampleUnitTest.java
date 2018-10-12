@@ -1,4 +1,4 @@
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
 import org.junit.Test;
 

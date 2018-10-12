@@ -1,9 +1,9 @@
-package com.cioc.libreerp;
+package com.cioc.vamso;
 
 import android.app.Application;
 
-import com.cioc.libreerp.db.DaoMaster;
-import com.cioc.libreerp.db.DaoSession;
+import com.cioc.vamso.db.DaoMaster;
+import com.cioc.vamso.db.DaoSession;
 
 import org.greenrobot.greendao.database.Database;
 
